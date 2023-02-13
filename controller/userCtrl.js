@@ -45,4 +45,88 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createUser,loginUserCtrl };
+
+
+const getallUser = asyncHandler(async (req, res) => {
+  try {
+    const getUsers = await User.find()
+    res.json(getUsers);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const getaUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  //validateMongoDbId(id);
+
+  try {
+    const getaUser = await User.findById(id);
+    res.json({
+      getaUser,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+
+const deleteaUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  //validateMongoDbId(id);
+
+  try {
+    const deleteaUser = await User.findByIdAndDelete(id);
+    res.json({
+      deleteaUser,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const blockUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  //validateMongoDbId(id);
+
+  try {
+    const blockusr = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: true,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(blockusr);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const unblockUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  //validateMongoDbId(id);
+
+  try {
+    const unblock = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: false,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json({
+      message: "User UnBlocked",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+
+
+module.exports = { createUser,loginUserCtrl,unblockUser,blockUser,getaUser,getallUser,deleteaUser };
