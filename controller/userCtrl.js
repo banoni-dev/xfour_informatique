@@ -48,8 +48,6 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   } else {
     throw new Error("Invalid Credentials");
   }
-  const refreshToken = req.headers.cookie.slice('refreshToken'.length +1 );
-  console.log(refreshToken);
 });
 
 
