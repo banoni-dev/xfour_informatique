@@ -8,12 +8,14 @@ const PORT = 5000;
 const authRouter = require("./routes/authRouter");
 const productRouter = require("./routes/productRouter");
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan')
 dbConnect();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
 app.use(cookieParser());
+app.use(morgan('dev'))
 
 
 app.use(notFound);
