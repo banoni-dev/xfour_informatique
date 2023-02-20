@@ -2,7 +2,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
-const storage = multer.diskStorage({
+const multerStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../public/images/"));
   },
@@ -21,9 +21,9 @@ const multerFilter = (req, file, cb) => {
 };
 
 const uploadPhoto = multer({
-  storage: storage,
+  storage: multerStorage,
   fileFilter: multerFilter,
-  limits: { fileSize: 1000000 },
+  limits: { fieldSize: 1000000 },
 });
 
 const productImgResize = async (req, res, next) => {

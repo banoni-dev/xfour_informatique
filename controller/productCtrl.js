@@ -197,6 +197,7 @@ const rating = asyncHandler(async (req, res) => {
 });
 
 const uploadImages = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   try {
     const uploader = (path) => cloudinaryUploadImg(path, "images");
     const urls = [];
@@ -204,14 +205,19 @@ const uploadImages = asyncHandler(async (req, res) => {
     for (const file of files) {
       const { path } = file;
       const newpath = await uploader(path);
-      console.log(newpath);
-      urls.push(newpath.url);
-      fs.unlinkSync(path);
+      urls.push(newpath);
+      fs.unlinkSync(path)
     }
-    const images = urls.map((file) => {
-      return file;
-    });
-    res.json(images);
+    const findProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        $push: { images: { $each: urls } }
+      },
+      {
+        new: true
+      }
+    );
+    res.json(findProduct);
   } catch (error) {
     throw new Error(error);
   }
